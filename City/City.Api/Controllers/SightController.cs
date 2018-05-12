@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace City.Api.Controllers
 {
-    [Route("api/town")]
+    [Route("api/town/{townId}/sights")]
     [ApiController]
     public class SightController : ControllerBase
     {
@@ -24,7 +24,7 @@ namespace City.Api.Controllers
             Logger = logger;
         }
         // GET api/values
-        [HttpGet("{townId}/sights")]
+        [HttpGet()]
         public async Task<ActionResult<IEnumerable<SightDto>>> Get(Guid townId)
         {
             if (townId == null) return BadRequest();
@@ -35,7 +35,7 @@ namespace City.Api.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{townId}/sights/{id}", Name = "GetSight")]
+        [HttpGet("{id}", Name = "GetSight")]
         public async Task<ActionResult<SightDto>> Get(Guid townId, Guid id)
         {
             if (townId == null || id == null)
@@ -52,7 +52,7 @@ namespace City.Api.Controllers
         }
 
         // POST api/values
-        [HttpPost("{townId}/sights")]
+        [HttpPost()]
         public async Task<ActionResult> Post(Guid townId, [FromBody] SightCreateDto sightCreateDto)
         {
             if (townId == null || sightCreateDto == null)
@@ -71,7 +71,7 @@ namespace City.Api.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut("{townId}/sights/{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid townId, Guid id, [FromBody] SightUpdateDto sightUpdateDto)
         {
             // null check

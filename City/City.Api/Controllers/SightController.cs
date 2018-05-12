@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using City.Api.Models.DTOs;
 using City.Api.Models.Entities;
+using City.Api.Services.EmailServices;
 using City.Api.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,11 +18,13 @@ namespace City.Api.Controllers
     {
         public ISightRepository Repository { get; }
         public ILogger<SightController> Logger { get; }
+        public IMailService MailService { get; }
 
-        public SightController(ISightRepository repository, ILogger<SightController> logger)
+        public SightController(ISightRepository repository, ILogger<SightController> logger, IMailService mailService)
         {
             Repository = repository;
             Logger = logger;
+            MailService = mailService;
         }
         // GET api/values
         [HttpGet()]
@@ -64,6 +67,8 @@ namespace City.Api.Controllers
             var sight = Mapper.Map<Sight>(sightCreateDto);
 
             await Repository.CreateSightAsync(townId, sight);
+
+            await MailService.SendEmailAsync("Sight Created!", $"Sight {sight.Name} with id {sight.Id} was created");
 
             var sightDto = Mapper.Map<SightDto>(sight);
 

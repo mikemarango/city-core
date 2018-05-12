@@ -6,6 +6,7 @@ using AutoMapper;
 using City.Api.Data;
 using City.Api.Models.DTOs;
 using City.Api.Models.Entities;
+using City.Api.Services.EmailServices;
 using City.Api.Services.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,13 @@ namespace City.Api
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<ITownRepository, TownRepository>();
             services.AddScoped<ISightRepository, SightRepository>();
+
+            //services.AddTransient<IMailService, LocalMail>();
+
+            services.AddTransient<IMailService, CloudMail>();
+
+            //services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            //services.Configure<MailSettings>(Configuration); //Using secret manager
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

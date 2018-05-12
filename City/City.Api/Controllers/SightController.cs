@@ -71,9 +71,28 @@ namespace City.Api.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{townId}/sights/{id}")]
+        public async Task<ActionResult> Put(Guid townId, Guid id, [FromBody] SightUpdateDto sightUpdateDto)
         {
+            // null check
+            if (townId == null || id == null || sightUpdateDto == null)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+
+            // retrieve the sight
+            var sight = await Repository.GetSightAsync(townId, id);
+
+            if (sight == null)
+                return NotFound();
+
+            Mapper.Map(sightUpdateDto, sight);
+
+            // call the repository
+            await Repository.UpdateSightAsync(sight);
+
+            return NoContent();
         }
 
         // DELETE api/values/5

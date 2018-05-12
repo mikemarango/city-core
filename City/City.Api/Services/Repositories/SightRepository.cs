@@ -35,6 +35,13 @@ namespace City.Api.Services.Repositories
             await Context.SaveChangesAsync();
         }
 
+        public async Task UpdateSightAsync(Sight sight)
+        {
+            Context.Sights.Update(sight);
+            await Context.SaveChangesAsync();
+            
+        }
+
         public async Task DeleteSightAsync(Sight sight)
         {
             Context.Sights.Remove(sight);

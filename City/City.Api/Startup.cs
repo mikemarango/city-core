@@ -56,6 +56,7 @@ namespace City.Api
             {
                 config.CreateMap<Town, TownDto>();
                 config.CreateMap<Sight, SightDto>();
+                config.CreateMap<SightCreateDto, Sight>();
             });
             app.UseMvc();
         }

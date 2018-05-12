@@ -25,14 +25,19 @@ namespace City.Api.Services.Repositories
 
         public async Task<Sight> GetSightAsync(Guid townId, Guid id)
         {
-            //return (await GetSightsAsync(townId)).SingleOrDefault(s => s.Id == id);
-            return await Context.Sights.FirstOrDefaultAsync(s => s.TownId == id && s.Id == id);
+            return (await GetSightsAsync(townId)).FirstOrDefault(s => s.Id == id);
         }
 
         public async Task CreateSightAsync(Guid id, Sight sight)
         {
             var town = await Context.Towns.FirstOrDefaultAsync(t => t.Id == id);
             town.Sights.Add(sight);
+            await Context.SaveChangesAsync();
+        }
+
+        public async Task DeleteSightAsync(Sight sight)
+        {
+            Context.Sights.Remove(sight);
             await Context.SaveChangesAsync();
         }
     }
